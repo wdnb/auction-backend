@@ -34,7 +34,7 @@ func Viper() (err error) {
 	// 指定配置文件路径
 	viper.AddConfigPath(configPath)
 	viper.SetConfigType("toml")
-	viper.SetConfigName("app")
+	viper.SetConfigName(".app")
 	err = viper.ReadInConfig() // 读取配置信息
 
 	if err != nil {
