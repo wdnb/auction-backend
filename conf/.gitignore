@@ -1,0 +1,10 @@
+# Ignore all configuration files
+.*.yml
+.*.yaml
+.*.json
+.*.config
+.*.conf
+.*.env
+.*.properties
+.*rc
+.*toml

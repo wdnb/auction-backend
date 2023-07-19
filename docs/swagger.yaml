@@ -1,0 +1,1371 @@
+definitions:
+  account.Amount:
+    properties:
+      amount:
+        type: number
+    required:
+    - amount
+    type: object
+  auction.Auction:
+    properties:
+      bid_increment:
+        example: 10
+        type: number
+      category_id:
+        example: 101
+        type: integer
+      description:
+        example: 这里是拍品描述
+        type: string
+      end_time:
+        example: 1681819182
+        type: integer
+      fixed_price:
+        example: 100
+        type: number
+      id:
+        type: integer
+      image_url:
+        example: https://example.com/image.jpg
+        type: string
+      name:
+        example: 上拍品名
+        type: string
+      processed:
+        example: 0
+        type: integer
+      product_id:
+        example: 101
+        type: integer
+      product_uid:
+        example: 101
+        type: integer
+      start_price:
+        example: 2.1
+        type: number
+      start_time:
+        example: 1681398030
+        type: integer
+      status:
+        enum:
+        - upcoming
+        - active
+        - sold
+        - unsold
+        - expired
+        - cancelled
+        example: upcoming
+        type: string
+    required:
+    - name
+    - status
+    type: object
+  auction.Bid:
+    properties:
+      bid_price:
+        example: 101.1
+        type: number
+      customer_id:
+        example: 101
+        type: integer
+    required:
+    - bid_price
+    type: object
+  auction.Update:
+    properties:
+      status:
+        enum:
+        - upcoming
+        - active
+        - sold
+        - unsold
+        - expired
+        - cancelled
+        type: string
+    required:
+    - status
+    type: object
+  product.Product:
+    properties:
+      bid_increment:
+        type: number
+      category_id:
+        type: integer
+      description:
+        type: string
+      end_time:
+        type: integer
+      fixed_price:
+        type: number
+      id:
+        type: integer
+      image_url:
+        type: string
+      name:
+        maxLength: 30
+        minLength: 6
+        type: string
+      quantity:
+        maximum: 88888888
+        minimum: 1
+        type: integer
+      start_price:
+        type: number
+      start_time:
+        type: integer
+      user_id:
+        type: integer
+    required:
+    - bid_increment
+    - category_id
+    - description
+    - end_time
+    - fixed_price
+    - image_url
+    - start_price
+    - start_time
+    - user_id
+    type: object
+  product.UpdateProduct:
+    properties:
+      bid_increment:
+        example: 10
+        type: number
+      category_id:
+        example: 2
+        type: integer
+      description:
+        example: 这里是商品描述
+        type: string
+      end_time:
+        example: 1681819182
+        type: integer
+      fixed_price:
+        example: 100
+        type: number
+      image_url:
+        example: https://example.com/image.jpg
+        type: string
+      name:
+        example: 商品名
+        maxLength: 30
+        minLength: 6
+        type: string
+      quantity:
+        example: 998
+        maximum: 88888888
+        minimum: 1
+        type: integer
+      start_price:
+        example: 2.1
+        type: number
+      start_time:
+        example: 1681398030
+        type: integer
+    type: object
+  resp.ErrResponse:
+    properties:
+      code:
+        default: 1000
+        type: integer
+      msg:
+        type: string
+      time_now:
+        type: integer
+    type: object
+  resp.Response:
+    properties:
+      code:
+        default: 0
+        type: integer
+      data: {}
+      time_now:
+        type: integer
+    type: object
+  user.CodeSendUser:
+    properties:
+      phone:
+        type: string
+    type: object
+  user.CreateShippingAddress:
+    properties:
+      address:
+        maxLength: 120
+        minLength: 2
+        type: string
+      is_active:
+        type: boolean
+      phone:
+        type: string
+      recipient_name:
+        maxLength: 120
+        minLength: 2
+        type: string
+      region:
+        maxLength: 120
+        minLength: 2
+        type: string
+    required:
+    - address
+    - phone
+    - recipient_name
+    - region
+    type: object
+  user.Login:
+    properties:
+      password:
+        maxLength: 20
+        minLength: 6
+        type: string
+      username:
+        maxLength: 30
+        minLength: 6
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  user.ShippingAddress:
+    properties:
+      address:
+        maxLength: 120
+        minLength: 2
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      phone:
+        type: string
+      recipient_name:
+        maxLength: 120
+        minLength: 2
+        type: string
+      region:
+        maxLength: 120
+        minLength: 2
+        type: string
+    required:
+    - address
+    - phone
+    - recipient_name
+    - region
+    type: object
+  user.UpdateUser:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 20
+        minLength: 6
+        type: string
+      username:
+        maxLength: 30
+        minLength: 6
+        type: string
+    type: object
+  user.VerificationCode:
+    properties:
+      code:
+        type: string
+      kind:
+        enum:
+        - login
+        - register
+        - reset_password
+        type: string
+      phone:
+        type: string
+    required:
+    - code
+    type: object
+  utils.PaginationQ:
+    properties:
+      list:
+        description: save pagination list
+      page:
+        type: integer
+      size:
+        description: Ok   bool   `json:"ok"`
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /account/balance:
+    get:
+      consumes:
+      - application/json
+      description: 查询用户账户的余额
+      parameters:
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询用户余额
+      tags:
+      - account
+  /account/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: 处理用户提现请求,减少用户余额,发起转账
+      parameters:
+      - description: 提现信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/account.Amount'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 用户提现
+      tags:
+      - account
+  /account/withdrawal-record:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的提现记录
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.PaginationQ'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 用户提现记录
+      tags:
+      - account
+  /auction:
+    get:
+      consumes:
+      - application/json
+      description: 获取分页后的所有拍卖品
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 拍卖品列表
+          schema:
+            allOf:
+            - $ref: '#/definitions/resp.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/utils.PaginationQ'
+              type: object
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 获取所有拍卖品
+      tags:
+      - auction
+    post:
+      consumes:
+      - application/json
+      description: 创建一个新的拍卖品
+      parameters:
+      - description: 拍卖品信息
+        in: body
+        name: auction
+        required: true
+        schema:
+          $ref: '#/definitions/auction.Auction'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 拍卖品id
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: 没有权限
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建拍卖品
+      tags:
+      - auction
+  /auction/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定ID的拍卖品
+      parameters:
+      - description: 拍卖品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: 未认证
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "403":
+          description: 禁止访问
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 拍卖品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除拍卖品
+      tags:
+      - auction
+    get:
+      consumes:
+      - application/json
+      description: 根据ID获取拍卖品详情
+      parameters:
+      - description: 拍卖品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 拍卖品详情
+          schema:
+            allOf:
+            - $ref: '#/definitions/resp.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/auction.Auction'
+              type: object
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 拍卖品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 获取拍卖品详情
+      tags:
+      - auction
+    put:
+      consumes:
+      - application/json
+      description: 更新指定ID的拍卖品信息
+      parameters:
+      - description: 拍卖品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 拍卖品信息
+        in: body
+        name: auction
+        required: true
+        schema:
+          $ref: '#/definitions/auction.Update'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: 未认证
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "403":
+          description: 禁止访问
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 拍卖品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新拍卖品
+      tags:
+      - auction
+  /auction/{id}/bid:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定拍卖品的竞拍列表,支持分页
+      parameters:
+      - description: 拍卖品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/utils.PaginationQ'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 拍卖品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 获取拍卖品的所有竞拍
+      tags:
+      - auction
+    post:
+      consumes:
+      - application/json
+      description: 为指定拍卖品创建新的竞拍信息
+      parameters:
+      - description: 拍卖品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 竞拍信息
+        in: body
+        name: bid
+        required: true
+        schema:
+          $ref: '#/definitions/auction.Bid'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: 未认证
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "403":
+          description: 禁止访问
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 拍卖品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "409":
+          description: 竞拍冲突
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建竞拍
+      tags:
+      - auction
+  /common/file/avatar:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传用户头像图片
+      parameters:
+      - description: 头像图片
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 上传成功,返回上传后的文件名
+          schema:
+            allOf:
+            - $ref: '#/definitions/resp.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 上传失败
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 上传头像
+      tags:
+      - common
+  /common/file/video:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传用户视频
+      parameters:
+      - description: 视频文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 上传成功,返回上传后的文件名
+          schema:
+            allOf:
+            - $ref: '#/definitions/resp.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 上传失败
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 上传视频
+      tags:
+      - common
+  /product:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: 产品信息
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/product.Product'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功返回产品ID
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
+      summary: 创建产品
+      tags:
+      - product
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功删除产品
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: 未授权的操作
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 产品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除产品
+      tags:
+      - product
+    get:
+      consumes:
+      - application/json
+      description: Get product detail by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功返回产品详情
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 产品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 获取产品详情
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      description: Update product information
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated product data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/product.UpdateProduct'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功返回成功消息
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: 未授权的访问
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 商品不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新商品信息
+      tags:
+      - product
+  /product/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of products with pagination
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功返回产品列表
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 获取产品列表
+      tags:
+      - product
+  /user/center:
+    get:
+      consumes:
+      - application/json
+      description: Get user center information
+      parameters:
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 请求成功，返回用户信息和用户详情
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "404":
+          description: 用户不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户中心信息
+      tags:
+      - user
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: User login with username and password
+      parameters:
+      - description: 登录信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功返回token
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: 密码错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 用户不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 用户登录
+      tags:
+      - user
+  /user/login-phone:
+    post:
+      consumes:
+      - application/json
+      description: 通过发送的验证码登陆
+      parameters:
+      - description: 通过验证码登录
+        in: body
+        name: 验证码
+        required: true
+        schema:
+          $ref: '#/definitions/user.VerificationCode'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功返回token
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 用户不存在或者验证码错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 手机号登录
+      tags:
+      - user
+  /user/profile/{uid}:
+    get:
+      consumes:
+      - application/json
+      description: Get user profile by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: string
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功返回用户资料
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 用户不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户资料
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update user profile by user ID
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: string
+      - description: User profile data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUser'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated user profile data
+          schema:
+            $ref: '#/definitions/user.UpdateUser'
+        "400":
+          description: Invalid request or malformed JSON
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新用户资料
+      tags:
+      - user
+  /user/shipping-address:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户地址列表
+      parameters:
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            items:
+              $ref: '#/definitions/resp.Response'
+            type: array
+        "401":
+          description: 未授权或Token过期
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户地址
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: Create a new shipping address for a user
+      parameters:
+      - description: 收货地址信息
+        in: body
+        name: Address
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateShippingAddress'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功返回地址ID
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 用户不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建收货地址
+      tags:
+      - user
+  /user/shipping-address/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user address by ID
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 地址删除成功
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 用户不存在
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除用户地址
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update the shipping address of a user by ID
+      parameters:
+      - description: 地址的主键id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Shipping address information
+        in: body
+        name: ShippingAddress
+        required: true
+        schema:
+          $ref: '#/definitions/user.ShippingAddress'
+      - description: JWT token
+        in: header
+        name: Access-Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated shipping address
+          schema:
+            $ref: '#/definitions/user.ShippingAddress'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新用户地址信息
+      tags:
+      - user
+  /user/verification-code/{kind}:
+    post:
+      consumes:
+      - application/json
+      description: Get verification code for a specific kind
+      parameters:
+      - description: Kind of verification code
+        enum:
+        - login
+        - register
+        - reset_password
+        in: path
+        name: kind
+        required: true
+        type: string
+      - description: 手机号
+        in: body
+        name: Phone
+        required: true
+        schema:
+          $ref: '#/definitions/user.CodeSendUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功返回token
+          schema:
+            $ref: '#/definitions/resp.Response'
+        "400":
+          description: 非法请求
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "404":
+          description: 用户不存在或者验证码错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/resp.ErrResponse'
+      summary: 获得验证码
+      tags:
+      - user
+swagger: "2.0"

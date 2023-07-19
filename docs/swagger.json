@@ -1,0 +1,2085 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/account/balance": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "查询用户账户的余额",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "查询用户余额",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/withdraw": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "处理用户提现请求,减少用户余额,发起转账",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "用户提现",
+                "parameters": [
+                    {
+                        "description": "提现信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account.Amount"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/withdrawal-record": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取用户的提现记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "用户提现记录",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.PaginationQ"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auction": {
+            "get": {
+                "description": "获取分页后的所有拍卖品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auction"
+                ],
+                "summary": "获取所有拍卖品",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "拍卖品列表",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/resp.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/utils.PaginationQ"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "创建一个新的拍卖品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auction"
+                ],
+                "summary": "创建拍卖品",
+                "parameters": [
+                    {
+                        "description": "拍卖品信息",
+                        "name": "auction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auction.Auction"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "拍卖品id",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "没有权限",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auction/{id}": {
+            "get": {
+                "description": "根据ID获取拍卖品详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auction"
+                ],
+                "summary": "获取拍卖品详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "拍卖品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "拍卖品详情",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/resp.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/auction.Auction"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "拍卖品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "更新指定ID的拍卖品信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auction"
+                ],
+                "summary": "更新拍卖品",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "拍卖品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "拍卖品信息",
+                        "name": "auction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auction.Update"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未认证",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "禁止访问",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "拍卖品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "删除指定ID的拍卖品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auction"
+                ],
+                "summary": "删除拍卖品",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "拍卖品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未认证",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "禁止访问",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "拍卖品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auction/{id}/bid": {
+            "get": {
+                "description": "获取指定拍卖品的竞拍列表,支持分页",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auction"
+                ],
+                "summary": "获取拍卖品的所有竞拍",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "拍卖品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/utils.PaginationQ"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "拍卖品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "为指定拍卖品创建新的竞拍信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auction"
+                ],
+                "summary": "创建竞拍",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "拍卖品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "竞拍信息",
+                        "name": "bid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auction.Bid"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未认证",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "禁止访问",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "拍卖品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "竞拍冲突",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/common/file/avatar": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "上传用户头像图片",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "common"
+                ],
+                "summary": "上传头像",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "头像图片",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "上传成功,返回上传后的文件名",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/resp.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "上传失败",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/common/file/video": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "上传用户视频",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "common"
+                ],
+                "summary": "上传视频",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "视频文件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "上传成功,返回上传后的文件名",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/resp.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "上传失败",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/product": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "创建产品",
+                "parameters": [
+                    {
+                        "description": "产品信息",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.Product"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建成功返回产品ID",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/list": {
+            "get": {
+                "description": "Get a list of products with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "获取产品列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "获取成功返回产品列表",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}": {
+            "get": {
+                "description": "Get product detail by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "获取产品详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回产品详情",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "产品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update product information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "更新商品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated product data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.UpdateProduct"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新成功返回成功消息",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权的访问",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "商品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a product by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "删除产品",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功删除产品",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权的操作",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "产品不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/center": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user center information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户中心信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功，返回用户信息和用户详情",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "User login with username and password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "登录信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登录成功返回token",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login-phone": {
+            "post": {
+                "description": "通过发送的验证码登陆",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "手机号登录",
+                "parameters": [
+                    {
+                        "description": "通过验证码登录",
+                        "name": "验证码",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.VerificationCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登录成功返回token",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在或者验证码错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile/{uid}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user profile by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户资料",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "uid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回用户资料",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update user profile by user ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "更新用户资料",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "uid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User profile data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.UpdateUser"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated user profile data",
+                        "schema": {
+                            "$ref": "#/definitions/user.UpdateUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or malformed JSON",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/shipping-address": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取用户地址列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "获取成功",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resp.Response"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "未授权或Token过期",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new shipping address for a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "创建收货地址",
+                "parameters": [
+                    {
+                        "description": "收货地址信息",
+                        "name": "Address",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.CreateShippingAddress"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建成功返回地址ID",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/shipping-address/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update the shipping address of a user by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "更新用户地址信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "地址的主键id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Shipping address information",
+                        "name": "ShippingAddress",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.ShippingAddress"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated shipping address",
+                        "schema": {
+                            "$ref": "#/definitions/user.ShippingAddress"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a user address by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "删除用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Address ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Access-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "地址删除成功",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/verification-code/{kind}": {
+            "post": {
+                "description": "Get verification code for a specific kind",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获得验证码",
+                "parameters": [
+                    {
+                        "enum": [
+                            "login",
+                            "register",
+                            "reset_password"
+                        ],
+                        "type": "string",
+                        "description": "Kind of verification code",
+                        "name": "kind",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "手机号",
+                        "name": "Phone",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.CodeSendUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登录成功返回token",
+                        "schema": {
+                            "$ref": "#/definitions/resp.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在或者验证码错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/resp.ErrResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "account.Amount": {
+            "type": "object",
+            "required": [
+                "amount"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                }
+            }
+        },
+        "auction.Auction": {
+            "type": "object",
+            "required": [
+                "name",
+                "status"
+            ],
+            "properties": {
+                "bid_increment": {
+                    "type": "number",
+                    "example": 10
+                },
+                "category_id": {
+                    "type": "integer",
+                    "example": 101
+                },
+                "description": {
+                    "type": "string",
+                    "example": "这里是拍品描述"
+                },
+                "end_time": {
+                    "type": "integer",
+                    "example": 1681819182
+                },
+                "fixed_price": {
+                    "type": "number",
+                    "example": 100
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "type": "string",
+                    "example": "https://example.com/image.jpg"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "上拍品名"
+                },
+                "processed": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "product_id": {
+                    "type": "integer",
+                    "example": 101
+                },
+                "product_uid": {
+                    "type": "integer",
+                    "example": 101
+                },
+                "start_price": {
+                    "type": "number",
+                    "example": 2.1
+                },
+                "start_time": {
+                    "type": "integer",
+                    "example": 1681398030
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "upcoming",
+                        "active",
+                        "sold",
+                        "unsold",
+                        "expired",
+                        "cancelled"
+                    ],
+                    "example": "upcoming"
+                }
+            }
+        },
+        "auction.Bid": {
+            "type": "object",
+            "required": [
+                "bid_price"
+            ],
+            "properties": {
+                "bid_price": {
+                    "type": "number",
+                    "example": 101.1
+                },
+                "customer_id": {
+                    "type": "integer",
+                    "example": 101
+                }
+            }
+        },
+        "auction.Update": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "upcoming",
+                        "active",
+                        "sold",
+                        "unsold",
+                        "expired",
+                        "cancelled"
+                    ]
+                }
+            }
+        },
+        "product.Product": {
+            "type": "object",
+            "required": [
+                "bid_increment",
+                "category_id",
+                "description",
+                "end_time",
+                "fixed_price",
+                "image_url",
+                "start_price",
+                "start_time",
+                "user_id"
+            ],
+            "properties": {
+                "bid_increment": {
+                    "type": "number"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "type": "integer"
+                },
+                "fixed_price": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 6
+                },
+                "quantity": {
+                    "type": "integer",
+                    "maximum": 88888888,
+                    "minimum": 1
+                },
+                "start_price": {
+                    "type": "number"
+                },
+                "start_time": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "product.UpdateProduct": {
+            "type": "object",
+            "properties": {
+                "bid_increment": {
+                    "type": "number",
+                    "example": 10
+                },
+                "category_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "description": {
+                    "type": "string",
+                    "example": "这里是商品描述"
+                },
+                "end_time": {
+                    "type": "integer",
+                    "example": 1681819182
+                },
+                "fixed_price": {
+                    "type": "number",
+                    "example": 100
+                },
+                "image_url": {
+                    "type": "string",
+                    "example": "https://example.com/image.jpg"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 6,
+                    "example": "商品名"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "maximum": 88888888,
+                    "minimum": 1,
+                    "example": 998
+                },
+                "start_price": {
+                    "type": "number",
+                    "example": 2.1
+                },
+                "start_time": {
+                    "type": "integer",
+                    "example": 1681398030
+                }
+            }
+        },
+        "resp.ErrResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": 1000
+                },
+                "msg": {
+                    "type": "string"
+                },
+                "time_now": {
+                    "type": "integer"
+                }
+            }
+        },
+        "resp.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "default": 0
+                },
+                "data": {},
+                "time_now": {
+                    "type": "integer"
+                }
+            }
+        },
+        "user.CodeSendUser": {
+            "type": "object",
+            "properties": {
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.CreateShippingAddress": {
+            "type": "object",
+            "required": [
+                "address",
+                "phone",
+                "recipient_name",
+                "region"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 2
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "recipient_name": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 2
+                },
+                "region": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 2
+                }
+            }
+        },
+        "user.Login": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 6
+                }
+            }
+        },
+        "user.ShippingAddress": {
+            "type": "object",
+            "required": [
+                "address",
+                "phone",
+                "recipient_name",
+                "region"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 2
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "recipient_name": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 2
+                },
+                "region": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 2
+                }
+            }
+        },
+        "user.UpdateUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 6
+                }
+            }
+        },
+        "user.VerificationCode": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string",
+                    "enum": [
+                        "login",
+                        "register",
+                        "reset_password"
+                    ]
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.PaginationQ": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "save pagination list"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "size": {
+                    "description": "Ok   bool   `json:\"ok\"`",
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,3 @@
+001_init.up.sql
+内容必须包含created_at updated_at deleted_at，字段类型为TIMESTAMP
+包含且不限于索引，每个字段都要有注释，索引需要设置合理
