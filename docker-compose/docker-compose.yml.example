@@ -3,7 +3,7 @@ services:
 
   mysql:
     image: mysql:${MYSQL_VERSION}
-    container_name: mysql
+    container_name: ${COMPOSE_PROJECT_NAME}_mysql
     command: --log-bin --binlog-format=row
     ports:
       - "3306:3306"
@@ -21,7 +21,7 @@ services:
 
   mongodb:
     image: mongo:6.0.5-jammy
-    container_name: mongodb
+    container_name: ${COMPOSE_PROJECT_NAME}_mongodb
 #    restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
@@ -35,7 +35,7 @@ services:
 
   mongo-express:
     image: mongo-express:latest
-    container_name: mongo-express
+    container_name: ${COMPOSE_PROJECT_NAME}_mongo-express
 #    restart: always
     ports:
       - "8081:8081"
@@ -48,7 +48,7 @@ services:
 
   redis:
     image: redis:${REDIS7_VERSION}
-    container_name: redis
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
     ports:
       - "${REDIS7_HOST_PORT}:6379"
     volumes:
@@ -66,7 +66,7 @@ services:
   # NSQ ################################################
   nsqlookupd:
     image: ${NSQ_VERSION}
-    container_name: nsqlookupd
+    container_name: ${COMPOSE_PROJECT_NAME}_nsqlookupd
     command: /nsqlookupd
     ports:
       - "4160:4160"
@@ -76,7 +76,7 @@ services:
 
   nsqd:
     image: ${NSQ_VERSION}
-    container_name: nsqd
+    container_name: ${COMPOSE_PROJECT_NAME}_nsqd
     #    2天=172800s
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
     depends_on:
@@ -91,7 +91,7 @@ services:
 
   nsqadmin:
     image: ${NSQ_VERSION}
-    container_name: nsqadmin
+    container_name: ${COMPOSE_PROJECT_NAME}_nsqadmin
     command: /nsqadmin --lookupd-http-address=nsqlookupd:4161
     depends_on:
       - nsqlookupd
@@ -103,7 +103,7 @@ services:
 # Portainer ################################################
   portainer:
     image:  portainer/portainer
-    container_name: portainer
+    container_name: ${COMPOSE_PROJECT_NAME}_portainer
     volumes:
       - ${DATA_DIR}/portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -114,40 +114,40 @@ services:
     networks:
       - default
 
-  auction-backend:
-    build: ${SOURCE_DIR}
-    container_name: auction-backend
-    volumes:
-      - ./logs/auction-website:/var/log/auction-website/:rw
-    restart: always
-    environment:
-      - ENV_VAR=value
-    depends_on:
-      - mysql
-      - redis
-      - nsqd
-      - nsqlookupd
-    ports:
-      - "8080:8080"
-    networks:
-      - default
-
-#air 开发模式热加载代码
-#  air:
-#    build:
-#      context: services/air
-#      # Correct the path to your Dockerfile
-##      dockerfile: services/air/Dockerfile
-#    container_name: air
-#    # working_dir value has to be the same of mapped volume
-#    working_dir: /app
+#  auction-backend:
+#    build: ${SOURCE_DIR}
+#    container_name: ${COMPOSE_PROJECT_NAME}_auction-backend
+#    volumes:
+#      - ./logs/auction-website:/var/log/auction-website/:rw
+#    restart: always
+#    environment:
+#      - ENV_VAR=value
+#    depends_on:
+#      - mysql
+#      - redis
+#      - nsqd
+#      - nsqlookupd
 #    ports:
 #      - "8080:8080"
-#    volumes:
-#      - ${SOURCE_DIR}:/app
-#      - ${LOG_DIR}/auction-website:/var/log/auction-website/:rw
 #    networks:
 #      - default
+
+#air 开发模式热加载代码
+  air:
+    build:
+      context: services/air
+      # Correct the path to your Dockerfile
+#      dockerfile: services/air/Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME}_air
+    # working_dir value has to be the same of mapped volume
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${SOURCE_DIR}:/app
+      - ${LOG_DIR}/auction-website:/var/log/auction-website/:rw
+    networks:
+      - default
 
 
 networks:
