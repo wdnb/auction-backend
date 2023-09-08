@@ -1,5 +1,5 @@
 # 设置基础镜像
-FROM golang:1.20-alpine as builder
+FROM golang:1.21-alpine as builder
 
 # 设置工作目录
 WORKDIR /app
@@ -10,7 +10,7 @@ COPY . .
 # 复制依赖项清单并下载依赖项
 RUN go env -w GO111MODULE=on \
 && go env -w GOPROXY=https://goproxy.cn,direct \
-&& go mod tidy -go=1.20
+&& go mod tidy -go=1.21
 
 # build 应用程序
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auction-backend .
