@@ -21,7 +21,7 @@ services:
 
   mongodb:
     image: mongo:6.0.5-jammy
-    container_name: ${COMPOSE_PROJECT_NAME}_mongodb
+    container_name: ${COMPOSE_PROJECT_NAME}-mongodb
 #    restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
@@ -35,7 +35,7 @@ services:
 
   mongo-express:
     image: mongo-express:latest
-    container_name: ${COMPOSE_PROJECT_NAME}_mongo-express
+    container_name: ${COMPOSE_PROJECT_NAME}-mongo-express
 #    restart: always
     ports:
       - "8081:8081"
@@ -48,7 +48,7 @@ services:
 
   redis:
     image: redis:${REDIS7_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_redis
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
     ports:
       - "${REDIS7_HOST_PORT}:6379"
     volumes:
@@ -66,7 +66,7 @@ services:
   # NSQ ################################################
   nsqlookupd:
     image: ${NSQ_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_nsqlookupd
+    container_name: ${COMPOSE_PROJECT_NAME}-nsqlookupd
     command: /nsqlookupd
     ports:
       - "4160:4160"
@@ -76,7 +76,7 @@ services:
 
   nsqd:
     image: ${NSQ_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_nsqd
+    container_name: ${COMPOSE_PROJECT_NAME}-nsqd
     #    2天=172800s
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
     depends_on:
@@ -91,7 +91,7 @@ services:
 
   nsqadmin:
     image: ${NSQ_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_nsqadmin
+    container_name: ${COMPOSE_PROJECT_NAME}-nsqadmin
     command: /nsqadmin --lookupd-http-address=nsqlookupd:4161
     depends_on:
       - nsqlookupd
@@ -103,7 +103,7 @@ services:
 # Portainer ################################################
   portainer:
     image:  portainer/portainer
-    container_name: ${COMPOSE_PROJECT_NAME}_portainer
+    container_name: ${COMPOSE_PROJECT_NAME}-portainer
     volumes:
       - ${DATA_DIR}/portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -116,7 +116,7 @@ services:
 
 #  auction-backend:
 #    build: ${SOURCE_DIR}
-#    container_name: ${COMPOSE_PROJECT_NAME}_auction-backend
+#    container_name: ${COMPOSE_PROJECT_NAME}-auction-backend
 #    volumes:
 #      - ./logs/auction-website:/var/log/auction-website/:rw
 #    restart: always
@@ -138,7 +138,7 @@ services:
       context: services/air
       # Correct the path to your Dockerfile
 #      dockerfile: services/air/Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME}_air
+    container_name: ${COMPOSE_PROJECT_NAME}-air
     # working_dir value has to be the same of mapped volume
     working_dir: /app
     ports:
