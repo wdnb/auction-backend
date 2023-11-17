@@ -32,7 +32,7 @@ func NewHandler(c *conf.Config) *Handler {
 // @Failure 400 {object} resp.ErrResponse{} "非法请求"
 // @Failure 500 {object} resp.ErrResponse{} "内部错误"
 // @Router /auction [get]
-func (h *Handler) getAllAuctions(c *gin.Context) {
+func (h *Handler) getAuctions(c *gin.Context) {
 	page := c.DefaultQuery("page", "1")
 	pageSize := "20"
 	// Convert query parameters to integers
@@ -220,7 +220,7 @@ func (h *Handler) deleteAuction(c *gin.Context) {
 // @Failure 404 {object} resp.ErrResponse "拍卖品不存在"
 // @Failure 500 {object} resp.ErrResponse "内部错误"
 // @Router /auction/{id}/bid [get]
-func (h *Handler) getAllBids(c *gin.Context) {
+func (h *Handler) getBids(c *gin.Context) {
 	id := c.Param("id")
 	idInt, err := utils.StringToUint32(id)
 	if err != nil {

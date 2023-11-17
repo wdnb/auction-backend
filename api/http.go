@@ -47,7 +47,7 @@ func Setup(c *conf.Config) *gin.Engine {
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
 	//初始路由
-	version := r.Group("v1")
+	version := r.Group("api/v1")
 
 	user.Routes(version, c, m)
 	product.Routes(version, c, m)
