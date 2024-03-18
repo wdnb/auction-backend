@@ -68,7 +68,7 @@ func (s *Service) CheckAuctions() error {
 		bid, err := auctionRepo.GetHighestBid(a.ID)
 		if err != nil {
 			//所谓的流拍 不管是不是系统异常 先直接processed 127 避免死循环
-			//todo 需要提供一个手动创建order的方法
+			//TODO 需要提供一个手动创建order的方法
 			_ = s.UpdateProcessed(&Processed{ID: a.ID, Processed: 127})
 			zap.L().Info("NSQ:Failed to get highest bid for auction", zap.Uint32("auction_id", a.ID), zap.Error(err))
 			continue

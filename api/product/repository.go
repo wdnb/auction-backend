@@ -6,6 +6,7 @@ import (
 
 	"auction-website/internal/global"
 	"auction-website/utils"
+
 	"github.com/jmoiron/sqlx"
 )
 
@@ -60,7 +61,7 @@ func (r *Repository) UpdateProduct(p *UpdateProduct) error {
 	}
 	if num == 0 {
 		return global.ErrNotUpdate
-		//todo 其他地方的更新目标不存在或已更新也修改
+		//TODO 其他地方的更新目标不存在或已更新也修改
 	}
 	return nil
 }

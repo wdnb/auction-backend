@@ -11,7 +11,7 @@ port = "8080"
 #定时器运行间隔(seconds 默认：1800)
 auction_run_interval = 5#应当禁止发布小于这个时间的拍卖
 #在当前时间范围内的时间区域(seconds 默认：3600 极限3600s)
-#todo 启动的时候清理process 就可以避免系统不在线期间的超时拍卖订单
+#TODO 启动的时候清理process 就可以避免系统不在线期间的超时拍卖订单
 auction_time_start_offset = 17280000
 auction_time_end_offset = 3600
 

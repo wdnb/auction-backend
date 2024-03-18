@@ -5,10 +5,11 @@ import (
 	mdb "auction-website/database/connectors/mongodb"
 	"encoding/json"
 	"fmt"
+	"log"
+
 	"github.com/gorilla/websocket"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
-	"log"
 )
 
 type Config struct {
@@ -21,7 +22,7 @@ func NewIM(c *conf.Config) *Config {
 	}
 }
 
-// todo redis key需要优化 mongodbkey也一样
+// TODO redis key需要优化 mongodbkey也一样
 func (c *Config) Start() {
 	client := c.mdb
 	//fmt.Println(client)

@@ -235,7 +235,7 @@ func (s *Service) CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-// todo 可升级为黑名单检测
+// TODO 可升级为黑名单检测
 func (s *Service) CheckUserExist(uid uint32) (bool, error) {
 	exist, err := s.repo.CheckUserExistByID(uid)
 	//fmt.Println(exist)
@@ -255,7 +255,7 @@ func (s *Service) CreateShippingAddress(sp *CreateShippingAddress) (uint32, erro
 			return 0, err
 		}
 	}
-	//todo 设置收货地址数量上限
+	//TODO 设置收货地址数量上限
 	id, err := s.repo.CreateShippingAddress(sp)
 	if err != nil {
 		return 0, err

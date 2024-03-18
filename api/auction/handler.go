@@ -79,7 +79,7 @@ func (h *Handler) createAuction(c *gin.Context) {
 	a := request.(*Auction)
 	//fmt.Println(p)
 	//fmt.Println(uid)
-	//todo 检测是否有权限创建拍品
+	//TODO 检测是否有权限创建拍品
 	// 1:从请求中获取当前用户的信息，判断用户是否有权限创建拍卖
 	// 2:检查用户是否为管理员或拥有创建拍卖的特殊权限，如果不是则返回错误信息
 	//app := c.MustGet("app").(*utils.Components)
@@ -267,7 +267,7 @@ func (h *Handler) getBids(c *gin.Context) {
 // @Router /auction/{id}/bid [post]
 // @Security ApiKeyAuth
 // @Param Access-Token header string true "JWT token" // 添加JWT头部参数
-// todo 互斥锁 防止脏数据
+// TODO 互斥锁 防止脏数据
 func (h *Handler) createBid(c *gin.Context) {
 	uid := req.GetUid(c)
 	id := c.Param("id")

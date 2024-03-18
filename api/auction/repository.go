@@ -9,12 +9,13 @@ import (
 	"auction-website/utils"
 	"errors"
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/nsqio/go-nsq"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"log"
-	"time"
 )
 
 type Repository struct {
@@ -46,7 +47,7 @@ func (r *Repository) CreateAuction(a *Auction) (uint32, error) {
 	return uint32(id), nil
 }
 
-// todo 因当做筛选 where status=1...
+// TODO 因当做筛选 where status=1...
 func (r *Repository) GetAllAuctions(page uint32, pageSize uint32) ([]*List, error) {
 	offset := utils.Offset(page, pageSize)
 	query := `SELECT 

@@ -468,6 +468,6 @@ func (h *Handler) getVerificationCode(c *gin.Context) {
 		resp.ErrorResponse(c, http.StatusInternalServerError, resp.ERROR, global.ErrInternal, err)
 		return
 	}
-	//todo 接入短信运营商
+	//TODO 接入短信运营商
 	resp.DataResponse(c, "验证码发送成功")
 }

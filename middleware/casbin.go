@@ -3,12 +3,13 @@ package middleware
 import (
 	"auction-website/conf"
 	"auction-website/middleware/casbin"
+	"path/filepath"
+	"time"
+
 	sqlxadapter "github.com/Blank-Xu/sqlx-adapter"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/spf13/viper"
-	"path/filepath"
-	"time"
 )
 
 type Claims struct {
@@ -37,7 +38,7 @@ func (c *Config) getAdapter(tableName, rbacModelName string) *sqlxadapter.Adapte
 	return a
 }
 
-// todo jwt 过期时间考虑一下
+// TODO jwt 过期时间考虑一下
 func subjectFromJWT(c *gin.Context) (string, error) {
 	// Check if access_token exists in both header and cookie
 	tokenString := c.Request.Header.Get("Access-Token")
@@ -71,7 +72,7 @@ func GenerateToken(uid uint32, roleName string) (string, error) {
 		ID: uid,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Subject:   roleName,
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)), //todo jwt过期时间
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)), //TODO jwt过期时间
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

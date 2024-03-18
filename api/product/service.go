@@ -24,7 +24,7 @@ func (s *Service) CreateProduct(p *Product) (uint32, error) {
 	return pid, nil
 }
 
-// todo 增加where条件的参数
+// TODO 增加where条件的参数
 func (s *Service) GetProductList(page, pageSize uint32) ([]*Product, error) {
 	products, err := s.repo.GetProductList(page, pageSize)
 	if err != nil {

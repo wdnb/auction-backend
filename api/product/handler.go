@@ -47,8 +47,8 @@ func (h *Handler) createHandler(c *gin.Context) {
 		return
 	}
 	p := request.(*Product)
-	//todo 这个如果用户修改了名字 jwt还没过期 name就是错的  解决方法是改名后刷新jwt
-	//todo 也可在 JWT 中不包含用户名，而是在每次请求时通过其他方式来获取用户名，例如在数据库中进行查询。
+	//TODO 这个如果用户修改了名字 jwt还没过期 name就是错的  解决方法是改名后刷新jwt
+	//TODO 也可在 JWT 中不包含用户名，而是在每次请求时通过其他方式来获取用户名，例如在数据库中进行查询。
 	//写入uid
 	p.UserID = uid
 	pid, err := h.Service.CreateProduct(p)

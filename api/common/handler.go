@@ -7,9 +7,10 @@ import (
 	"auction-website/utils/resp"
 	"auction-website/utils/upload"
 	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"net/http"
 )
 
 type Handler struct {
@@ -38,11 +39,11 @@ func NewHandler(c *conf.Config) *Handler {
 func (h *Handler) avatarUpload(c *gin.Context) {
 	uid := req.GetUid(c)
 	var fileName string
-	//todo 检测数据库 avatar是否已设置
+	//TODO 检测数据库 avatar是否已设置
 	//kind := "exist1"
 	var overWrite bool
 	//if kind == "exist" {
-	//	//todo 从数据库获取头像名进行覆盖操作
+	//	//TODO 从数据库获取头像名进行覆盖操作
 	//	fileName = "exist"
 	//	overWrite = true
 	//} else {
@@ -66,7 +67,7 @@ func (h *Handler) avatarUpload(c *gin.Context) {
 	}
 	//fmt.Println(fName)
 	//upload.MoveFile(fName[0], true)
-	//todo 文件名写入数据库
+	//TODO 文件名写入数据库
 	resp.DataResponse(c, fName)
 }
 
